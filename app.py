@@ -54,8 +54,8 @@ class Books_list(db.Model):
     def __repr__(self):
         return f"Books_list('{self.book_name}', '{self.book_img}', '{self.date_posted}')"
 
-# db.drop_all()
-# db.create_all()
+db.drop_all()
+db.create_all()
 
 class RegistrationForm(FlaskForm):
     # id = IntegerField(validators=[DataRequired()])
