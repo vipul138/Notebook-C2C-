@@ -1,0 +1,284 @@
+@charset "utf-8";
+/* ==========================================================================
+   1. CSS Reset Code
+   ========================================================================== */
+
+/* 1.1. Eric Meyers Reset
+   http://meyerweb.com/eric/tools/css/reset/
+   v2.0 | 20110126
+   License: none (public domain)
+   ========================================================================== */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img,
+ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center,
+dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure,
+figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* Force scrollbar */
+html { overflow-y: scroll; }
+
+/* Align radios and text inputs with their label */
+
+input[type='radio'] { vertical-align: text-bottom; }
+
+/* Hand cursor on clickable input elements */
+label,
+input[type='button'],
+input[type='submit'],
+button {
+  cursor: pointer;
+}
+
+strong {
+  font-weight: bold;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+em { font-style: italic; }
+
+img {
+  width: 100%;
+  border: 0;
+  vertical-align: middle;
+}
+
+sub,
+sup {
+  vertical-align: baseline;
+  position: relative;
+  font-size: 55%;
+  line-height: 0;
+}
+
+sup { top: -.7em; }
+sub { bottom: -.25em; }
+
+/* 1.2. Clear Fix
+   ========================== */
+
+.cf:before,
+.cf:after {
+  display: table;
+  content: " ";
+}
+
+.cf:after { clear: both; }
+.cf { *zoom: 1; }
+
+/*for all*/
+body {
+  box-sizing: border-box;
+  background-color: #f0f2f5;
+}
+
+a { 
+  display: inline-block;
+  text-decoration: none; 
+}
+
+li {
+  display: inline-block;
+  list-style-type: none;
+}
+
+h1,h2,h3 {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+h4,h5,h6,p,span,input,label,select,button {
+  font-family: 'Open Sans', sans-serif;;
+}
+
+/*for wrapper*/
+.wrapper {
+  max-width: 1360px;
+  width: 95%; 
+  margin: 0 auto;
+}
+/*=================================
+  Header styling starts here
+=================================*/
+
+
+
+
+
+
+/*=================================
+  Header styling ends here
+=================================*/  
+
+/*=================================
+  main styling starts here
+=================================*/
+
+main {
+  margin-top: 40px;
+}
+
+h1 {
+  color: brown;
+  font-size: 50px;
+  font-family: 'Concert One', cursive;
+  user-select: none;
+  text-align: center;
+}
+
+.register {
+  width: 40%;
+  padding: 15px 2rem;
+  border: 1px solid #ccc;
+  margin: 40px auto 0;
+  border-radius: 10px;
+  box-shadow: 0 0 6px 0px #ccc;
+  background-color: #fff;
+}
+
+.register h2 {
+  width: 50%;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #999;
+  margin: 0 auto;
+  color: #555;
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.register form {
+  padding-top: 20px;
+}
+
+.register select {
+  margin-bottom: 26px;
+  font-size: 15px;
+  color: #555;
+  font-weight: 500;
+}
+
+.register select:focus {
+  box-shadow: none;
+}
+
+.register .form-group {
+  margin-top: 6px;
+  position: relative;
+}
+
+.form-group.floating>label {
+  width: 90%;
+  padding-left: 5px;
+  bottom: 30px;
+  left: 8px;
+  position: relative;
+  background-color: white;
+  padding: 0px 5px 0px 5px;
+  font-size: 15px;
+  transition: 0.1s;
+  pointer-events: none;
+  font-weight: 500 !important;
+  transform-origin: bottom left;
+  color: #555555;
+}
+
+.register input:focus {
+  box-shadow: none;
+  background-color: transparent;
+}
+
+.register .form-group > span {
+  display: block;
+  position: absolute;
+  bottom: 2px;
+  left: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #b91010;
+  opacity: 0;
+}
+
+.form-control.floating:focus~label{
+  width: 90px;
+  transform: translate(1px,-100%) scale(0.8);
+  opacity: .8;
+  color: #005ebf;
+}
+
+.form-control.floating:valid~label{
+  width: 90px;
+  transform-origin: bottom left;
+  transform: translate(1px,-100%) scale(0.80);
+  opacity: .8;
+}
+
+.register button {
+  width: 100%;
+  border: 2px solid #42b72a;
+  display: block;
+  margin: 12px auto 10px;
+  background-color: #42b72a;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  transition: 0.5s ease;
+}
+
+.register button:focus {
+  border: 2px solid #42b72a;
+  color: #fff;
+  background-color: #42b72a;
+  box-shadow: none;
+}
+
+.register button:hover {
+  border: 2px solid #42b72a;
+  background-color: #fff;
+  color: #42b72a;
+}
+
+
+
+
+
+
+/*=================================
+  main styling ends here
+=================================*/
+
+/*=================================
+  footer styling starts here
+=================================*/ 
+
+
+
+
+
+
+
+ /*=================================
+  footer styling ends here
+=================================*/ 
+
+/*media query starts*/
+/*media query for 995px starts here*/
+@media only screen and (max-width: 995px) {
+
+
+
+}  

@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block content %}
+<article class="media content-section">
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='image/' + book.book_img) }}" ,
+        alt="book_image">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="{{url_for('user_book', username=book.owner.username)}}">{{book.owner.username}}</a>
+            <small class="text-muted">Posted date : {{book.date_posted.strftime('%Y-%m-%d') }}</small>
+        </div>
+        <h3>Bookname : <a href="{{url_for('book', user_id=book.id)}}">{{book.book_name}}</a></h3>
+        <a class="nav-item nav-link" href="mailto:{{book.owner.email}}">Send mail</a>
+        <h4>price : {{book.price}}</h4>
+        <h4>Semester : {{book.semester}}</h4>
+        <a class="nav-item nav-link"
+            href='https://wa.me/91{{book.phone}}?text=I am Interested in {{book.book_name}} book'
+            target="_blank">Whatsapp</a>
+        {% if book.owner == current_user %}
+        <a href="{{url_for('update_book', user_id=book.id)}}">Update</a>
+        <a href="{{url_for('delete_book', user_id=book.id)}}">delete</a>
+        {% endif %}
+    </div>
+</article>
+{% endblock content %}
