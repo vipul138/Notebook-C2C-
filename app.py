@@ -44,7 +44,7 @@ class User(db.Model, UserMixin):
 class Books_list(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     book_name = db.Column(db.String(80), nullable=False)
-    book_img = db.Column(db.String(200), nullable=False, default='book.jpg')
+    book_img = db.Column(db.String(200), nullable=False, default='book.png')
     semester = db.Column(db.Integer, nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     price = db.Column(db.Integer, nullable=False)
@@ -54,8 +54,6 @@ class Books_list(db.Model):
     def __repr__(self):
         return f"Books_list('{self.book_name}', '{self.book_img}', '{self.date_posted}')"
 
-db.drop_all()
-db.create_all()
 
 class RegistrationForm(FlaskForm):
     # id = IntegerField(validators=[DataRequired()])
