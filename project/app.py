@@ -351,6 +351,6 @@ def reset_password(token):
     return render_template('reset_token.html', title='Reset Password', form=form)
 
 
-
-
+if __name__ == '__main__':
+    app.run(debug=True, port=8000)
 
