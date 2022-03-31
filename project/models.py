@@ -46,3 +46,6 @@ class Books_list(db.Model):
 
     def __repr__(self):
         return f"Books_list('{self.book_name}', '{self.book_img}', '{self.date_posted}')"
+
+
+db.create_all()
