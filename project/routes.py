@@ -1,158 +1,12 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask, render_template, url_for, redirect, request, flash, abort
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
-from flask_bcrypt import Bcrypt
-from datetime import datetime 
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
-from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from flask import render_template, url_for, redirect, request, flash, abort
+from flask_login import login_user, login_required, logout_user, current_user
 from PIL import Image
 import secrets
-import os, re
-from flask_mail import Message, Mail
-from itsdangerous import Serializer
-# mysql://root:root@localhost/notebook
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fykvapuavvxxhc:f6043adbdaa49927305f6ac0df35e88133833e4568c189214c1ef97f4a0419ba@ec2-44-194-92-192.compute-1.amazonaws.com:5432/d4v21pofckg71l'
-app.config['SECRET_KEY'] = 'secret'
-login_manager = LoginManager(app)
-login_manager.init_app(app)
-login_manager.login_view = "login"
-login_manager.login_message_category = 'info'
-app.config['MAIL_SERVER'] = 'smtp.googlemail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'vipulvishwakarma786@gmail.com'
-app.config['MAIL_PASSWORD'] = 'vipulserver786'
-db = SQLAlchemy(app)
-bcrypt = Bcrypt(app)
-mail = Mail(app)
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-class User(db.Model, UserMixin):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80),nullable=False, unique=True)
-    email = db.Column(db.String(120),nullable=False, unique=True)
-    image_file = db.Column(db.String(200), nullable=False, default='account.jpg')
-    password = db.Column(db.String(200), nullable=False)
-    books = db.relationship('Books_list', backref='owner', lazy=True)
-
-    def get_reset_token(self):
-        s = Serializer(app.config['SECRET_KEY'])
-        return s.dumps({'user_id': self.id})
-
-    @staticmethod
-    def verify_reset_token(token):
-        s = Serializer(app.config['SECRET_KEY'])
-        try:
-            user_id = s.loads(token)['user_id']
-        except:
-            return None
-        return User.query.get(user_id)
-
-    def __repr__(self):
-        return f"User('{self.id}', '{self.username}', '{self.email}')"
-
-
-class Books_list(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    book_name = db.Column(db.String(80), nullable=False)
-    book_img = db.Column(db.String(200), nullable=False, default='book.png')
-    semester = db.Column(db.Integer, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    price = db.Column(db.Integer, nullable=False)
-    phone = db.Column(db.String(10), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
-    def __repr__(self):
-        return f"Books_list('{self.book_name}', '{self.book_img}', '{self.date_posted}')"
-
-
-class RegistrationForm(FlaskForm):
-    username = StringField(validators=[DataRequired(), Length(min=2, max=30)])
-    email = StringField(validators=[DataRequired(), Email()])
-    password = PasswordField(validators=[DataRequired()])
-    confirm_password = PasswordField(validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Sign Up')
-
-    def validate_username(self, username):
-        pattern = re.compile("\w")
-        if pattern.match(username.data):
-            user = User.query.filter_by(username=username.data).first()
-            if user:
-                raise ValidationError('That username is taken. Please choose a different one.')
-        else:
-            raise ValidationError("enter correct number")
-
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user:
-            raise ValidationError('That email is taken. Please choose a different one.')
-    
-
-class LoginForm(FlaskForm):
-    username = StringField(validators=[DataRequired()])
-    password = PasswordField(validators=[DataRequired()])
-    submit = SubmitField('Login')
-
-
-class UpdateAccountForm(FlaskForm):
-    username = StringField(validators=[DataRequired(), Length(min=2, max=20)])
-    email = StringField(validators=[DataRequired(), Email()])
-    picture = FileField('update picture',validators=[FileAllowed(['jpg', 'png'])])
-    submit = SubmitField('Update')
-
-    def validate_username(self, username):
-        if username.data != current_user.username:
-            user = User.query.filter_by(username=username.data).first()
-            if user:
-                raise ValidationError('That username is taken. Please choose a different one.')
-
-    def validate_email(self, email):
-        if email.data != current_user.email:
-            user = User.query.filter_by(email=email.data).first()
-            if user:
-                raise ValidationError('That email is taken. Please choose a different one.')
-
-
-class UploadBookForm(FlaskForm):
-    bookname = StringField(validators=[DataRequired()])
-    semester = SelectField(choices = [('1', '1 Sem'), ('2', '2 Sem'), ('3', '3 Sem'), 
-                                        ('4', '4 Sem'), ('5', '5 Sem'), ('6', '6 Sem')])
-    price = IntegerField(validators=[DataRequired()])
-    phone = StringField(validators=[DataRequired(), Length(min=10, max=10)])
-    submit = SubmitField('Upload')
-
-    def validate_phone(self, phone):
-        pattern = re.compile("[7-9][0-9]{9}")
-        if pattern.match(phone.data):
-            pass
-        else:
-            raise ValidationError("enter correct number")
-
-class RequestResetForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
-    submit = SubmitField('Request Password Reset')
-
-    def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
-        if user is None:
-            raise ValidationError('There is no account with that email. You must register first.')
-
-
-class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Reset Password')
+import os
+from project import app, db, bcrypt, mail
+from project.forms import RegistrationForm, LoginForm, UpdateAccountForm, UploadBookForm, RequestResetForm, ResetPasswordForm
+from project.models import User, Books_list
+from flask_mail import Message
 
 
 @app.route('/')
@@ -311,7 +165,7 @@ def user_book(username):
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message('Password Reset Request',
-                sender='noreply@gmail.com',
+                # sender='noreply@gmail.com',
                   recipients=[user.email])
     msg.body = f'''To reset your password, visit the following link:
 {url_for('reset_password', token=token, _external=True)}
@@ -348,8 +202,3 @@ def reset_password(token):
         flash('Your password has been updated!', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
-
-
-if __name__ == '__main__':
-    app.run(debug=True, port=8000)
-
