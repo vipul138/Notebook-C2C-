@@ -16,7 +16,7 @@ from itsdangerous import Serializer
 # mysql://root:root@localhost/notebook
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://dihhqsrhhldtyf:be5226c8248b3cef2b1711d82243293c77d7f62f345de99edd648806a14ae791@ec2-52-21-136-176.compute-1.amazonaws.com:5432/d310alavcn4ind'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://fykvapuavvxxhc:f6043adbdaa49927305f6ac0df35e88133833e4568c189214c1ef97f4a0419ba@ec2-44-194-92-192.compute-1.amazonaws.com:5432/d4v21pofckg71l'
 app.config['SECRET_KEY'] = 'secret'
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -351,7 +351,6 @@ def reset_password(token):
     return render_template('reset_token.html', title='Reset Password', form=form)
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
 
