@@ -16,7 +16,7 @@ from itsdangerous import Serializer
 # mysql://root:root@localhost/notebook
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://pxycfplptqiebe:5bc7f7949aeddff4bb821fb9defdc5ca1b624edbd153a6bec5380bcd9023e300@ec2-54-157-79-121.compute-1.amazonaws.com:5432/dann5tncoaa5dp'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://dihhqsrhhldtyf:be5226c8248b3cef2b1711d82243293c77d7f62f345de99edd648806a14ae791@ec2-52-21-136-176.compute-1.amazonaws.com:5432/d310alavcn4ind'
 app.config['SECRET_KEY'] = 'secret'
 login_manager = LoginManager(app)
 login_manager.init_app(app)
