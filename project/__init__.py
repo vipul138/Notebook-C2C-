@@ -21,6 +21,8 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app)
 
+db.create_all()
+
 from project import routes
 
 
