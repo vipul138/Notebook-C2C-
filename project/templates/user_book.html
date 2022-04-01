@@ -3,26 +3,9 @@
 <h1 class="mb-3">Books by {{ user.username }} ({{books.total}})</h1>
 <div class="d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between flex-wrap bookList">
 {% for book in books.items %}
-<!-- <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ url_for('static', filename='image/' + book.book_img) }}" ,
-        alt="book_image">
-    <div class="media-body">
-        <div class="article-metadata">
-            <a class="mr-2" href="{{url_for('user_book', username=book.owner.username)}}">{{book.owner.username}}</a>
-            <small class="text-muted">{{book.date_posted.strftime('%Y-%m-%d') }}</small>
-        </div>
-        <h3>Bookname : <a href="{{url_for('book', user_id=book.id)}}">{{book.book_name}}</a></h3>
-        <a class="nav-item nav-link" href="mailto:{{book.owner.email}}">Send mail</a>
-        <h4>price : {{book.price}}</h4>
-        <h4>Semester : {{book.semester}}</h4>
-        <a class="nav-item nav-link"
-            href='https://wa.me/91{{book.phone}}?text=I am Interested in {{book.book_name}} book'
-            target="_blank">Whatsapp</a>
-    </div>
-</article> -->
 <div class="d-flex book">
     <figure class="d-flex align-items-cente">
-        <img src="{{ url_for('static', filename='image/' + book.book_img) }}" alt="Book Image">
+        <img src="{{ url_for('static', filename='Image/' + book.book_img) }}" alt="Book Image">
     </figure>
     <div class="d-flex flex-column justify-content-between bookDetail">
         <span class="postDate">Post Date: {{book.date_posted.strftime('%Y-%m-%d') }}</span>
@@ -35,10 +18,10 @@
         <h4>&#8377 {{book.price}}</h4>
         <span class="contact">
             <a href="mailto:{{book.owner.email}}" title="Mail" target="_blank">
-                <img src="{{ url_for('static', filename='image/mail-logo.png') }}" alt="mail-logo"></a>
+                <img src="{{ url_for('static', filename='Image/mail-logo.png') }}" alt="mail-logo"></a>
             <a href="https://wa.me/91{{book.phone}}?text=I am Interested in {{book.book_name}} book"
                 title="WhatsApp" target="_blank">
-                <img src="{{ url_for('static', filename='image/whatsapp-logo.png') }}" alt="whatsapp-logo"></a>
+                <img src="{{ url_for('static', filename='Image/whatsapp-logo.png') }}" alt="whatsapp-logo"></a>
              </span>
     </div>
 </div>
