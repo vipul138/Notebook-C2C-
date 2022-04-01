@@ -20,15 +20,15 @@ class RegistrationForm(FlaskForm):
         if pattern.match(username.data):
             user = User.query.filter_by(username=username.data).first()
             if user:
-                raise ValidationError('That username is taken. Please choose a different one.')
+                raise ValidationError('Please choose a different username, this one is taken.')
         else:
-            raise ValidationError("enter correct number")
+            raise ValidationError("Their should be no space in Username")
 
 
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user:
-            raise ValidationError('That email is taken. Please choose a different one.')
+            raise ValidationError('Please choose a different email, this one is registered.')
     
 
 class LoginForm(FlaskForm):
@@ -47,13 +47,13 @@ class UpdateAccountForm(FlaskForm):
         if username.data != current_user.username:
             user = User.query.filter_by(username=username.data).first()
             if user:
-                raise ValidationError('That username is taken. Please choose a different one.')
+                raise ValidationError('Please choose a different username, this one is taken.')
 
     def validate_email(self, email):
         if email.data != current_user.email:
             user = User.query.filter_by(email=email.data).first()
             if user:
-                raise ValidationError('That email is taken. Please choose a different one.')
+                raise ValidationError('Please choose a different email, this one is registered.')
 
 
 class UploadBookForm(FlaskForm):
