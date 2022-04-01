@@ -40,7 +40,7 @@ class LoginForm(FlaskForm):
 class UpdateAccountForm(FlaskForm):
     username = StringField(validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField(validators=[DataRequired(), Email()])
-    picture = FileField('update picture',validators=[FileAllowed(['jpg', 'png'])])
+    picture = FileField(validators=[FileAllowed(['jpg', 'png'])])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -72,8 +72,7 @@ class UploadBookForm(FlaskForm):
             raise ValidationError("enter correct number")
 
 class RequestResetForm(FlaskForm):
-    email = StringField('Email',
-                        validators=[DataRequired(), Email()])
+    email = StringField(validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
     def validate_email(self, email):
@@ -83,7 +82,6 @@ class RequestResetForm(FlaskForm):
 
 
 class ResetPasswordForm(FlaskForm):
-    password = PasswordField('Password', validators=[DataRequired()])
-    confirm_password = PasswordField('Confirm Password',
-                                     validators=[DataRequired(), EqualTo('password')])
+    password = PasswordField(validators=[DataRequired()])
+    confirm_password = PasswordField(validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')

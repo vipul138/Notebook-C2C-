@@ -4,9 +4,9 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 
-# mysql://root:root@localhost/notebook   
+#   postgresql://fykvapuavvxxhc:f6043adbdaa49927305f6ac0df35e88133833e4568c189214c1ef97f4a0419ba@ec2-44-194-92-192.compute-1.amazonaws.com:5432/d4v21pofckg71l 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://fykvapuavvxxhc:f6043adbdaa49927305f6ac0df35e88133833e4568c189214c1ef97f4a0419ba@ec2-44-194-92-192.compute-1.amazonaws.com:5432/d4v21pofckg71l'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:root@localhost/notebook'
 app.config['SECRET_KEY'] = 'secret'
 login_manager = LoginManager(app)
 login_manager.init_app(app)

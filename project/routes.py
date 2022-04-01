@@ -45,8 +45,7 @@ def register():
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        db.session.add(user)
+        db.session.add(User(username=form.username.data, email=form.email.data, password=hashed_password))
         db.session.commit()
         flash('Your account is created!', 'success')
         return redirect(url_for('login'))
@@ -100,10 +99,9 @@ def account():
 def sellbook():
     form = UploadBookForm()
     if form.validate_on_submit():
-        upload = Books_list(book_name=form.bookname.data,
+        db.session.add(Books_list(book_name=form.bookname.data,
                     semester=form.semester.data, price=form.price.data, 
-                    phone=form.phone.data, owner=current_user)
-        db.session.add(upload)
+                    phone=form.phone.data, owner=current_user))
         db.session.commit()
         return redirect(url_for('home'))
         
