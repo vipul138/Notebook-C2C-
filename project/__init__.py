@@ -15,8 +15,8 @@ login_manager.login_message_category = 'info'
 app.config['MAIL_SERVER'] = 'smtp.googlemail.com'     #its loaction of mail server eg- gmail, yahoo, etc
 app.config['MAIL_PORT'] = 587     # port from email is sent to server
 app.config['MAIL_USE_TLS'] = True   # security encryption purpose 
-app.config['MAIL_USERNAME'] = 'vipulvishwakarma786@gmail.com'
-app.config['MAIL_PASSWORD'] = 'vipulserver786'
+app.config['MAIL_USERNAME'] = 'vipulvishwakarma111@gmail.com'
+app.config['MAIL_PASSWORD'] = 'azbhdhmliyyoqabo'
 
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
