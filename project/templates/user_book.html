@@ -22,7 +22,7 @@
 </article> -->
 <div class="d-flex book">
     <figure class="d-flex align-items-cente">
-        <img src="{{ url_for('static', filename='image/book.png') }}" alt="Book Image">
+        <img src="{{ url_for('static', filename='image/' + book.book_img) }}" alt="Book Image">
     </figure>
     <div class="d-flex flex-column justify-content-between bookDetail">
         <span class="postDate">Post Date: {{book.date_posted.strftime('%Y-%m-%d') }}</span>

@@ -173,12 +173,11 @@ Ignore this message if request is not made by you.
 
 @app.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('home'))
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     form = RequestResetForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        send_reset_email(user)
+        send_reset_email(User.query.filter_by(email=form.email.data).first())
         flash('email has been sent to registered email_id', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
@@ -186,8 +185,8 @@ def reset_request():
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_password(token):
-    # if current_user.is_authenticated:
-    #     return redirect(url_for('home'))
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
     user = User.verify_reset_token(token)
     if user is None:
         flash('This link has been expired', 'warning')
