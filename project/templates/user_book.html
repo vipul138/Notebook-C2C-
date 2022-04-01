@@ -22,7 +22,7 @@
 </article> -->
 <div class="d-flex book">
     <figure class="d-flex align-items-cente">
-        <img src="{{ url_for('static', filename='image/' + book.book_img) }}" alt="Book Image">
+        <img src="{{ url_for('static', filename='image/book.png') }}" alt="Book Image">
     </figure>
     <div class="d-flex flex-column justify-content-between bookDetail">
         <span class="postDate">Post Date: {{book.date_posted.strftime('%Y-%m-%d') }}</span>
@@ -34,10 +34,11 @@
         </div>
         <h4>&#8377 {{book.price}}</h4>
         <span class="contact">
-            <a href="mailto:{{book.owner.email}}" title="Mail"><img src="{{ url_for('static', filename='image/mail-logo.png') }}"
-                alt="whatsapp-logo"></a>
-                <a href="https://wa.me/91{{book.phone}}?text=I am Interested in {{book.book_name}} book"
-                title="WhatsApp" target="_blank"><img src="{{ url_for('static', filename='image/whatsapp-logo.png') }}" alt="mail-logo"></a>
+            <a href="mailto:{{book.owner.email}}" title="Mail" target="_blank">
+                <img src="{{ url_for('static', filename='image/mail-logo.png') }}" alt="mail-logo"></a>
+            <a href="https://wa.me/91{{book.phone}}?text=I am Interested in {{book.book_name}} book"
+                title="WhatsApp" target="_blank">
+                <img src="{{ url_for('static', filename='image/whatsapp-logo.png') }}" alt="whatsapp-logo"></a>
              </span>
     </div>
 </div>
