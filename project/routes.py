@@ -48,8 +48,7 @@ def Adminlogin():
 def Adminhome():
     form = AdminHomeForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).one()
-        db.session.delete(user)
+        db.session.delete(User.query.filter_by(username=form.username.data).one())
         db.session.commit()
         flash('User account has been deleted', 'success')
         return redirect(url_for('Adminhome'))
