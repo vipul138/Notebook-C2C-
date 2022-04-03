@@ -129,6 +129,10 @@ main .wrapper {
 .form-group{
   margin-bottom: 10px;
 }
+.container{
+  padding-right: 150px;
+  padding-left: 150px;
+}
 
 .books h2 {
   max-width: 50%;
