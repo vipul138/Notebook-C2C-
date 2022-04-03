@@ -6,7 +6,7 @@ from flask_mail import Mail
 
 # mysql://root:root@localhost/notebook 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://cjzkpjkvfmxwuj:e62e25c0b11f855a085e46867c5a6c2aee392922de43dcdd2a2cf1bb9a994cf6@ec2-3-218-171-44.compute-1.amazonaws.com:5432/dac10m6lfngorp'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sxdhvypeupceuh:3fe03d3bcac07280528f7aaa5c8a5b0829fd10399767bfecf8facc7b460c047c@ec2-54-173-77-184.compute-1.amazonaws.com:5432/devsjed06efl05'
 app.config['SECRET_KEY'] = 'secret'
 login_manager = LoginManager(app)
 login_manager.init_app(app)
