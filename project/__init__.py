@@ -4,9 +4,9 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 
-# mysql://root:root@localhost/notebook 
+# mysql://root:root@localhost/notebook  
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sxdhvypeupceuh:3fe03d3bcac07280528f7aaa5c8a5b0829fd10399767bfecf8facc7b460c047c@ec2-54-173-77-184.compute-1.amazonaws.com:5432/devsjed06efl05'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://tparlisdlxurdz:ea35bd90e87172065f3f49525eadb16fda5808372caf8db50987ad1ebaddf81e@ec2-3-230-122-20.compute-1.amazonaws.com:5432/d5i3qv074m1dmh'
 app.config['SECRET_KEY'] = 'secret'
 login_manager = LoginManager(app)
 login_manager.init_app(app)
@@ -23,7 +23,6 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 mail = Mail(app)
 
-db.create_all()
 
 from project import routes
 

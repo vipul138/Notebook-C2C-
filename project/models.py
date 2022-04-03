@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     email = db.Column(db.String(120),nullable=False, unique=True)
     image_file = db.Column(db.String(200), nullable=False, default='account.jpg')
     password = db.Column(db.String(200), nullable=False)
-    books = db.relationship('Books_list', backref='owner', lazy=True)
+    books = db.relationship('Books_list', backref='owner', cascade="all,delete", lazy=True)
 
     def get_reset_token(self):
         s = Serializer(app.config['SECRET_KEY'])
@@ -42,7 +42,7 @@ class Books_list(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     price = db.Column(db.Integer, nullable=False)
     phone = db.Column(db.String(10), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'))
 
     def __repr__(self):
         return f"Books_list('{self.book_name}', '{self.book_img}', '{self.date_posted}')"
