@@ -41,9 +41,17 @@ class AdminLoginForm(FlaskForm):
     password = PasswordField(validators=[DataRequired()])
     submit = SubmitField('Login')
 
+
 class AdminHomeForm(FlaskForm):
     username = StringField(validators=[DataRequired()])
     submit = SubmitField('delete user')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            pass
+        else:
+            raise ValidationError('This user is not registered.')
 
 class UpdateAccountForm(FlaskForm):
     username = StringField(validators=[DataRequired(), Length(min=2, max=20)])
@@ -93,3 +101,4 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField(validators=[DataRequired()])
     confirm_password = PasswordField(validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+

@@ -126,6 +126,10 @@ main .wrapper {
   justify-content: flex-end;
 }
 
+.form-group{
+  margin-bottom: 10px;
+}
+
 .books h2 {
   max-width: 50%;
   min-width: 350px;
