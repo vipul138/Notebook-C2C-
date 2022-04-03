@@ -42,9 +42,10 @@ class Books_list(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     price = db.Column(db.Integer, nullable=False)
     phone = db.Column(db.String(10), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return f"Books_list('{self.book_name}', '{self.book_img}', '{self.date_posted}')"
 
-
+# db.drop_all()
+# db.create_all()

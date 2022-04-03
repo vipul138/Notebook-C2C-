@@ -36,6 +36,14 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[DataRequired()])
     submit = SubmitField('Login')
 
+class AdminLoginForm(FlaskForm):
+    username = StringField(validators=[DataRequired()])
+    password = PasswordField(validators=[DataRequired()])
+    submit = SubmitField('Login')
+
+class AdminHomeForm(FlaskForm):
+    username = StringField(validators=[DataRequired()])
+    submit = SubmitField('delete user')
 
 class UpdateAccountForm(FlaskForm):
     username = StringField(validators=[DataRequired(), Length(min=2, max=20)])

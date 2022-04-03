@@ -4,7 +4,7 @@ from PIL import Image
 import secrets
 import os
 from project import app, db, bcrypt, mail
-from project.forms import RegistrationForm, LoginForm, UpdateAccountForm, UploadBookForm, RequestResetForm, ResetPasswordForm
+from project.forms import AdminHomeForm, AdminLoginForm, RegistrationForm, LoginForm, UpdateAccountForm, UploadBookForm, RequestResetForm, ResetPasswordForm
 from project.models import User, Books_list
 from flask_mail import Message
 
@@ -36,7 +36,27 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='login', form=form)
 
- 
+@app.route('/Adminlogin', methods=['Get', 'Post'])
+def Adminlogin():
+    form = AdminLoginForm()
+    if form.validate_on_submit():
+        if form.username.data == 'admin' and form.password.data == 'admin':
+            return redirect(url_for('Adminhome'))
+    return render_template('Adminlogin.html', title='Adminlogin', form=form)
+
+@app.route('/Adminhome', methods=['Get', 'Post'])
+def Adminhome():
+    form = AdminHomeForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).one()
+        db.session.delete(user)
+        db.session.commit()
+        flash('User account has been deleted', 'success')
+        return redirect(url_for('Adminhome'))
+    return render_template('Adminhome.html', title='Adminhome', form=form)
+
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
