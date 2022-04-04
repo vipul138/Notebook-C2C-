@@ -47,12 +47,13 @@ def Adminlogin():
 @app.route('/Adminhome', methods=['Get', 'Post'])
 def Adminhome():
     form = AdminHomeForm()
+    allUser = User.query.all()
     if form.validate_on_submit():
         db.session.delete(User.query.filter_by(username=form.username.data).one())
         db.session.commit()
         flash('User account has been deleted', 'success')
         return redirect(url_for('Adminhome'))
-    return render_template('Adminhome.html', title='Adminhome', form=form)
+    return render_template('Adminhome.html', title='Adminhome', form=form, allUser=allUser)
 
 
 
