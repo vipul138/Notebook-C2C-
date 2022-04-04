@@ -15,6 +15,7 @@ def logo():
 
 
 @app.route('/home')
+@login_required
 def home():
     page = request.args.get('page', 1, type=int)
     books = Books_list.query.order_by(Books_list.date_posted.desc()).paginate(page=page, per_page=4)
@@ -24,7 +25,6 @@ def home():
 @app.route('/login', methods=['Get', 'Post'])
 def login():
     form = LoginForm()
-
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
