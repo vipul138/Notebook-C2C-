@@ -23,8 +23,9 @@
             {{ form.submit(class="btn btn-outline-info") }}
         </div>
     </form>
+    <h6>Users</h6>
     {% for i in allUser %}
-        <div>user : {{i.username}}</div>
+        <div>{{i.username}}</div>
     {% endfor %}
 </div>
 {% endblock content %}

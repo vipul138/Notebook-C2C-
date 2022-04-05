@@ -5,7 +5,7 @@ from itsdangerous import Serializer
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 
@@ -17,12 +17,12 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(200), nullable=False)
     books = db.relationship('Books_list', backref='owner', cascade="all,delete", lazy=True)
 
-    def get_reset_token(self):
-        s = Serializer(app.config['SECRET_KEY'])
+    def get_token(self):
+        s = Serializer(app.config['SECRET_KEY'])   
         return s.dumps({'user_id': self.id})
 
     @staticmethod
-    def verify_reset_token(token):
+    def verify_token(token):
         s = Serializer(app.config['SECRET_KEY'])
         try:
             user_id = s.loads(token)['user_id']

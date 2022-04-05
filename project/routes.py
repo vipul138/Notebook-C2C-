@@ -1,12 +1,12 @@
 from flask import render_template, url_for, redirect, request, flash, abort
-from flask_login import login_user, login_required, logout_user, current_user
-from PIL import Image
+from flask_login import login_user, login_required, logout_user, current_user  # user session management 
+from PIL import Image       # image library
 import secrets
 import os
 from project import app, db, bcrypt, mail
 from project.forms import AdminHomeForm, AdminLoginForm, RegistrationForm, LoginForm, UpdateAccountForm, UploadBookForm, RequestResetForm, ResetPasswordForm
 from project.models import User, Books_list
-from flask_mail import Message
+from flask_mail import Message 
 
 
 @app.route('/')
@@ -19,7 +19,23 @@ def logo():
 def home():
     page = request.args.get('page', 1, type=int)
     books = Books_list.query.order_by(Books_list.date_posted.desc()).paginate(page=page, per_page=4)
+            # paginate helps to divide the content of single page into multiple pages and more customizations.
     return render_template('home.html', title='home', books=books)
+
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')  # decode is converting binary value to string
+        db.session.add(User(username=form.username.data, email=form.email.data, password=pw_hash))
+        db.session.commit()
+        flash('Your account is created!', 'success')      # displays message
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
 
 
 @app.route('/login', methods=['Get', 'Post'])
@@ -27,7 +43,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
+        if user and bcrypt.check_password_hash(user.password, form.password.data):  # authentication from db
             login_user(user)
             other_page=request.args.get('next')
             return redirect(other_page) if other_page else redirect(url_for('home'))
@@ -56,22 +72,6 @@ def Adminhome():
     return render_template('Adminhome.html', title='Adminhome', form=form, allUser=allUser)
 
 
-
-@app.route('/register', methods=['GET', 'POST'])
-def register():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        db.session.add(User(username=form.username.data, email=form.email.data, password=hashed_password))
-        db.session.commit()
-        flash('Your account is created!', 'success')
-        return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
-
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -80,12 +80,12 @@ def logout():
 
 
 def change_pic(update_picture):
-    hex = secrets.token_hex(8)   # generates hexadecimal no of image
+    hex = secrets.token_hex(8)                                 # generates hexadecimal no of image
     _, extension = os.path.splitext(update_picture.filename)   # this returns 2 value name and extension of file
     picture_fn = hex + extension
     path = os.path.join(app.root_path, 'static/profile_pic', picture_fn) # saving image on a path
 
-    output_size = (125, 125)          # resize the large image to small
+    output_size = (125, 125)                                   # resize the large image to small
     i = Image.open(update_picture)
     i.thumbnail(output_size)
     i.save(path)
@@ -98,7 +98,7 @@ def change_pic(update_picture):
 def account():
     form = UpdateAccountForm()
     if form.validate_on_submit():
-        if form.picture.data:
+        if form.picture.data:          # if you selected the updated picture then this if statement will run
             picture_file = change_pic(form.picture.data)
             current_user.image_file = picture_file
         current_user.username = form.username.data
@@ -130,8 +130,9 @@ def sellbook():
 
 
 @app.route("/book/<int:user_id>")
+@login_required
 def book(user_id):
-    book = Books_list.query.get_or_404(user_id)
+    book = Books_list.query.get_or_404(user_id)    # get_or_404 will route to page if present otherwise it will show page not fount instead of error
     return render_template('book.html', title=book.owner.username, book=book)
 
 
@@ -139,7 +140,7 @@ def book(user_id):
 @login_required
 def update_book(user_id):
     book = Books_list.query.get_or_404(user_id)
-    if book.owner != current_user:
+    if book.owner != current_user:       # if user is different and want to update diff user book by routing then the brower will not allow 
         abort(403)
     form = UploadBookForm()
     if form.validate_on_submit():
@@ -163,7 +164,7 @@ def update_book(user_id):
 @login_required
 def delete_book(user_id):
     book = Books_list.query.get_or_404(user_id)
-    if book.owner != current_user:
+    if book.owner != current_user:                 # if user is different and want to delete diff user book by routing then the brower will not allow 
         abort(403)
     db.session.delete(book)
     db.session.commit()
@@ -178,13 +179,11 @@ def user_book(username):
     books = Books_list.query.filter_by(owner=user)\
                 .order_by(Books_list.date_posted.desc())\
                 .paginate(page=page, per_page=4)
-    return render_template('user_book.html', title='userBook',books=books, user=user)
+    return render_template('user_book.html', title='userBook', books=books, user=user)
 
-def send_reset_email(user):
-    token = user.get_reset_token()
-    msg = Message('Password Reset Request',
-                sender='noreply@gmail.com',
-                  recipients=[user.email])
+def send_email(user):
+    token = user.get_token()        # instialize unique token(string) from serializer class for reseting password
+    msg = Message('Password Reset Request', sender='noreply@gmail.com', recipients=[user.email])  # message instance
     msg.body = f'''To reset your password, visit the following link:
 {url_for('reset_password', token=token, _external=True)}
 Ignore this message if request is not made by you.
@@ -197,7 +196,7 @@ def reset_request():
         return redirect(url_for('home'))
     form = RequestResetForm()
     if form.validate_on_submit():
-        send_reset_email(User.query.filter_by(email=form.email.data).first())
+        send_email(User.query.filter_by(email=form.email.data).first())
         flash('email has been sent to registered email_id', 'info')
         return redirect(url_for('login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
@@ -207,14 +206,14 @@ def reset_request():
 def reset_password(token):
     if current_user.is_authenticated:
         return redirect(url_for('home'))
-    user = User.verify_reset_token(token)
+    user = User.verify_token(token)
     if user is None:
         flash('This link has been expired', 'warning')
         return redirect(url_for('reset_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user.password = hashed_password
+        pw_hash = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = pw_hash
         db.session.commit()
         flash('Your password has been updated!', 'success')
         return redirect(url_for('login'))
