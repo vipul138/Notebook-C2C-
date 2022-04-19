@@ -1,13 +1,15 @@
 from datetime import datetime
 from project import db, login_manager, app
-from flask_login import UserMixin
+from flask_login import UserMixin   # Flask-Login provides user session management
 from itsdangerous import Serializer
 
-@login_manager.user_loader
+@login_manager.user_loader          # reloads the user object from the user ID stored in session
 def load_user(user_id):
     return User.query.get(user_id)
 
-
+# is_authenticated, get_id(), etc are User class properties. To make implementing a user class easier, 
+# you can inherit from UserMixin, which provides default implementations for all of these properties 
+# and methods.
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
